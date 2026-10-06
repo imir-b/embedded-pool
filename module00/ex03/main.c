@@ -22,6 +22,4 @@ int main(void)
             _delay_ms(20); // Wait for 20ms to ensure button release
         }
     }
-
-    return 0;
 }

@@ -50,6 +50,4 @@ int main(void)
         // Set the bit for PB4(D4) based on the fourth bit of the value
         PORTB |= (value & 0x08) << 1; 
     }
-
-    return 0;
 }

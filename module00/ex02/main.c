@@ -16,6 +16,4 @@ int main(void)
             PORTB |= (1 << PB0); // Set PB0 high
         }
     }
-
-    return 0;
 }
