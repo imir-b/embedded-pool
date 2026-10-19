@@ -4,7 +4,6 @@
 #define UBRR_VALUE ((F_CPU / (8UL * UART_BAUDRATE)) - 1)
 
 #include <avr/io.h>
-#include <avr/interrupt.h>
 
 void uart_init(unsigned int ubrr)
 {
@@ -66,9 +65,10 @@ int main(void)
     uart_init(UBRR_VALUE);
     timer1_init();
 
-    sei();
+    sei(); // Enable global interrupts
 
     while (1)
     {
+        // Do nothing
     }
 }

@@ -42,6 +42,4 @@ int main(void)
         uart_tx('Z');
         _delay_ms(1000);
     }
-
-    return 0;
 }

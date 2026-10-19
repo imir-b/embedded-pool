@@ -3,7 +3,6 @@
 #define UBRR_VALUE ((F_CPU / (8UL * UART_BAUDRATE)) - 1)
 
 #include <avr/io.h>
-#include <avr/interrupt.h>
 
 char uart_rx(void)
 {
@@ -47,14 +46,9 @@ int main(void)
 {
     uart_init(UBRR_VALUE);
 
-    /* Enable global interrupts */
-    sei();
-
     while (1)
     {
         char received_char = uart_rx();
         uart_tx(received_char);
     }
-
-    return 0;
 }
