@@ -5,5 +5,8 @@ int main(void)
     DDRB |= (1 << PB0); // Set PB0 as output
     PORTB |= (1 << PB0); // Set PB0 high
 
-    return 0;
+    while (1)
+    {
+        // Do nothing
+    }
 }

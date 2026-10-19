@@ -12,17 +12,23 @@ AVRDUDE = avrdude
 CCFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os
 
 SRCS = main.c
+HEX = $(NAME).hex
 
-all: hex flash
+all: flash
 
-hex:
-	$(CC) $(CCFLAGS) -o $(NAME).bin $(SRCS)
-	$(OBJCOPY) -O ihex -R .eeprom $(NAME).bin $(NAME).hex
+$(NAME).bin: $(SRCS)
+	$(CC) $(CCFLAGS) -o $@ $(SRCS)
 
-flash:
-	$(AVRDUDE) -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -U flash:w:$(NAME).hex:i
+$(HEX): $(NAME).bin
+	$(OBJCOPY) -O ihex -R .eeprom $< $@
+
+flash: $(HEX)
+	$(AVRDUDE) -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -U flash:w:$(HEX):i
+
+asm:
+	$(CC) $(CCFLAGS) -S $(SRCS) -o $(NAME).s
 
 clean:
-	rm -f $(NAME).bin $(NAME).hex
+	rm -f $(NAME).bin $(NAME).hex $(NAME).s
 
-.PHONY: all hex flash clean
+.PHONY: all flash asm clean

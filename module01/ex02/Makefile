@@ -19,10 +19,13 @@ hex:
 	$(CC) $(CCFLAGS) -o $(NAME).bin $(SRCS)
 	$(OBJCOPY) -O ihex -R .eeprom $(NAME).bin $(NAME).hex
 
+asm:
+	$(CC) $(CCFLAGS) -S $(SRCS) -o $(NAME).s
+
 flash:
 	$(AVRDUDE) -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -U flash:w:$(NAME).hex:i
 
 clean:
-	rm -f $(NAME).bin $(NAME).hex
+	rm -f $(NAME).bin $(NAME).hex $(NAME).s
 
 .PHONY: all hex flash clean
