@@ -7,7 +7,6 @@ void set_led_off(void)
     PORTD &= ~((1 << PD3) | (1 << PD5) | (1 << PD6));
 }
 
-
 void init_leds(void)
 {
     /* Configure PD3, PD5 and PD6 as outputs */
