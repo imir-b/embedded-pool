@@ -1,9 +1,12 @@
 
 #define F_CPU 16000000UL
+#define PRESCALER 1024UL
+#define FREQUENCY 1UL
 #define UART_BAUDRATE 115200UL
 #define UBRR_VALUE ((F_CPU / (8UL * UART_BAUDRATE)) - 1)
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 void uart_init(unsigned int ubrr)
 {
@@ -44,9 +47,8 @@ void timer1_init(void)
     TCCR1A = 0;
     TCCR1B = (1 << WGM12);
 
-    /* 16 MHz / 1024 = 15625 Hz
-       31250 ticks = 2 seconds */
-    OCR1A = 31249;
+    /* Set compare value */
+    OCR1A = F_CPU / PRESCALER * FREQUENCY - 1;
 
     /* Enable Timer1 Compare Match A interrupt */
     TIMSK1 = (1 << OCIE1A);

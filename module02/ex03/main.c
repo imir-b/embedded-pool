@@ -5,6 +5,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+int ft_isalpha(char c)
+{
+    return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+}
+
 void uart_init(unsigned int ubrr)
 {
     /* Enable double speed mode */
@@ -31,16 +36,15 @@ void uart_tx(char c)
 
     /* Put data into buffer, sends the data */
     UDR0 = c;
-
-    /* Toggle case if character is alphabetic */
-    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-        c ^= 0x20;
 }
 
 ISR(USART_RX_vect)
 {
     char received_char = UDR0; // Read the received character
-    uart_tx(received_char);   // Transmit the character back
+    if (ft_isalpha(received_char))
+        uart_tx(received_char ^ 0x20); // Toggle case and transmit the character back
+    else
+        uart_tx(received_char);   // Transmit the character back
 }
 
 int main(void)
