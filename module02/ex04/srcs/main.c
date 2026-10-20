@@ -36,7 +36,7 @@ int main(void)
             uart_printstr("Access granted!\r\n");
             uart_printstr("Welcome ");
             uart_printstr(username);
-            uart_printstr("! Good to see you\r\n");
+            uart_printstr("! Good to see you ;)\r\n");
             while (1)
             {
                 set_led_green();
