@@ -18,22 +18,18 @@ void init_rgb(void)
 
 void init_timer(void)
 {
-    /* Timer 0: Fast PWM, non-inverting on OC0A and OC0B */
+    /* Configure Timer 0 in PWM mode */
     TCCR0A = (1 << COM0A1) | (1 << COM0B1)
            | (1 << WGM01) | (1 << WGM00);
 
-    /* Timer 0 prescaler = 8 */
-    TCCR0B = (1 << CS01);
+    TCCR0B = (1 << CS01) | (1 << CS00); // prescaler 64
 
-    /* Timer 2: Fast PWM, non-inverting on OC2B */
+    /* Configure Timer 1 in PWM mode */
     TCCR2A = (1 << COM2B1)
            | (1 << WGM21) | (1 << WGM20);
 
-    /* Timer 2 prescaler = 8 */
-    TCCR2B = (1 << CS21);
+    TCCR2B = (1 << CS22); // prescaler 64
 }
-
-
 
 void set_rgb(uint8_t r, uint8_t g, uint8_t b)
 {
@@ -112,25 +108,25 @@ uint8_t check_hex_rgb(const char *value)
  */
 uint8_t convert_hex(const char *value, uint8_t rgb[3])
 {
-    char component[3] = {0};
+    char c[3] = {0};
 
     if (rgb == NULL || !check_hex_rgb(value))
         return 0;
 
     /* Red: characters 1 and 2 */
-    component[0] = value[1];
-    component[1] = value[2];
-    rgb[0] = (uint8_t)strtoul(component, NULL, 16);
+    c[0] = value[1];
+    c[1] = value[2];
+    rgb[0] = (uint8_t)strtoul(c, NULL, 16);
 
     /* Green: characters 3 and 4 */
-    component[0] = value[3];
-    component[1] = value[4];
-    rgb[1] = (uint8_t)strtoul(component, NULL, 16);
+    c[0] = value[3];
+    c[1] = value[4];
+    rgb[1] = (uint8_t)strtoul(c, NULL, 16);
 
     /* Blue: characters 5 and 6 */
-    component[0] = value[5];
-    component[1] = value[6];
-    rgb[2] = (uint8_t)strtoul(component, NULL, 16);
+    c[0] = value[5];
+    c[1] = value[6];
+    rgb[2] = (uint8_t)strtoul(c, NULL, 16);
 
     return 1;
 }
@@ -139,6 +135,7 @@ int main(void)
 {
     char hex_rgb[8]; // #RRGGBB in hex format
     uint8_t rgb[3]; // rgb values
+
     init_rgb();
     init_timer();
     uart_init(UBRR_VALUE);
