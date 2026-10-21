@@ -37,3 +37,12 @@ void uart_tx(char c)
     /* Put data into buffer, sends the data */
     UDR0 = c;
 }
+
+void uart_printstr(const char *str)
+{
+    while (*str)
+    {
+        uart_tx(*str);
+        str++;
+    }
+}
